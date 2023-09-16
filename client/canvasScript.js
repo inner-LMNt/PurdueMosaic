@@ -102,16 +102,6 @@ colorPicker.addEventListener("input", () => {
     setCurrentColor(color);
 });
 
-// Function to update the current prompt
-function updateCurrentPrompt(prompt) {
-    const currentPromptElement = document.getElementById("current-prompt");
-    currentPromptElement.textContent = prompt;
-}
-
-// Example usage:
-const initialPrompt = "Initial Prompt";
-updateCurrentPrompt(initialPrompt);
-
 // Function to capture canvas content and trigger download
 function downloadCanvas() {
 
