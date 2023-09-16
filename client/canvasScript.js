@@ -9,7 +9,8 @@ function createPixel() {
 
     // Add click event to change the pixel color
     pixel.addEventListener("click", () => {
-        pixel.style.backgroundColor = currentColor; // Set the selected color
+        const newColor = getColor(); // Get the selected color
+        pixel.style.backgroundColor = newColor; // Set the selected color
     });
 
     return pixel;
@@ -60,15 +61,18 @@ function getColor() {
     return colorPicker.value;
 }
 
-// Function to create the grid and add it to the canvas container
 function createGrid() {
     const canvasContainer = document.querySelector(".canvas-container");
 
     for (let i = 0; i < 30 * 50; i++) {
         const pixel = createPixel();
+        pixel.style.backgroundColor = "#fff"; // Set the initial background color to white
+        pixel.style.width = "20px"; // Set the pixel size
+        pixel.style.height = "20px"; // Set the pixel size
         canvasContainer.appendChild(pixel);
     }
 }
+
 
 // Call the function to create the grid when the page loads
 window.addEventListener("load", createGrid);
@@ -110,20 +114,15 @@ updateCurrentPrompt(initialPrompt);
 
 // Function to capture canvas content and trigger download
 function downloadCanvas() {
-    const canvasContainer = document.querySelector('.canvas-container');
 
-    // Create a temporary canvas element
-    const tempCanvas = document.createElement('canvas');
-    const context = tempCanvas.getContext('2d');
+    // Create a temporary canvas with the content of the grid
+    const tempCanvas = createTempCanvas();
+    
+    if (tempCanvas === null) {
+        console.error('Failed to create a temporary canvas.'); // Log an error if the temporary canvas creation failed
+        return;
+    }
 
-    // Set the dimensions of the temporary canvas to match the canvas container
-    tempCanvas.width = canvasContainer.offsetWidth;
-    tempCanvas.height = canvasContainer.offsetHeight;
-
-    // Draw the content of the canvas container onto the temporary canvas
-    context.drawImage(canvasContainer, 0, 0);
-
-    // Convert the canvas content to a data URL (PNG format)
     const dataURL = tempCanvas.toDataURL('image/png');
 
     // Create a download link
@@ -134,6 +133,53 @@ function downloadCanvas() {
     // Trigger a click event on the download link to start the download
     downloadLink.click();
 }
+
+function createTempCanvas() {
+    const canvasContainer = document.querySelector('.canvas-container');
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = 50 * 20; // Width of the canvas in pixels
+    tempCanvas.height = 30 * 20; // Height of the canvas in pixels
+    const context = tempCanvas.getContext('2d');
+
+    const pixels = canvasContainer.querySelectorAll('.pixel');
+
+    if (pixels.length === 0) {
+        console.error('No pixels found in the grid.');
+        return null;
+    }
+
+    // Loop through all the pixels and draw them onto the temporary canvas
+    pixels.forEach((pixel, index) => {
+        const x = (index % 50) * 20; // Adjust for pixel size
+        const y = Math.floor(index / 50) * 20; // Adjust for pixel size
+
+        // Retrieve the pixel's background color
+        const pixelColor = window.getComputedStyle(pixel).backgroundColor;
+
+        // Set the fill color to the pixel's background color
+        context.fillStyle = pixelColor;
+
+        // Draw a rectangle representing the pixel
+        context.fillRect(x, y, 20, 20); // Adjust for pixel size
+    });
+
+    return tempCanvas;
+}
+
+// Function to export the temporary canvas as a PNG image
+function exportCanvasAsPNG() {
+    const tempCanvas = createTempCanvas();
+    const dataURL = tempCanvas.toDataURL('image/png');
+
+    // Create a download link
+    const downloadLink = document.createElement('a');
+    downloadLink.href = dataURL;
+    downloadLink.download = 'canvas.png'; // Set the default download filename
+
+    // Trigger a click event on the download link to start the download
+    downloadLink.click();
+}
+
 
 function clearCanvas() { //will clear canvas when called
     const pixels = document.querySelectorAll('.pixel');

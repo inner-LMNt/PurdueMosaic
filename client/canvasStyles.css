@@ -9,7 +9,7 @@ html, body {
     background-color: #f9d07d; /* Background color for the entire page */
     flex-direction: column;
     height: 100vh;
-    font-family: Arial, sans-serif;
+    font-family: 'Trebuchet MS', sans-serif;
 }
 
 .page-container {
