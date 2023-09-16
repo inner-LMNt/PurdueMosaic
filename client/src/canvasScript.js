@@ -135,6 +135,13 @@ function downloadCanvas() {
     downloadLink.click();
 }
 
+function clearCanvas() { //will clear canvas when called
+    const pixels = document.querySelectorAll('.pixel');
+            pixels.forEach(pixel => {
+                pixel.style.backgroundColor = "#fff"; // clears pixel background color
+            });
+}
+
 // Add a click event listener to the download button
 const downloadButton = document.getElementById('download-button');
 downloadButton.addEventListener('click', downloadCanvas);
