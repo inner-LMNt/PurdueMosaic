@@ -19,13 +19,18 @@ html, body {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Add shadow to the container */
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
+    overflow: auto;
+    overflow-x: auto;
+    max-height: 100vh;
+    min-width: 100%;
 }
 
 .title {
     font-size: 24px;
     text-align: center;
     margin-bottom: 15px; /* Reduce margin at the bottom */
-    margin-top: 10px; /* Add margin at the top */
+    margin-top: 5px; /* Add margin at the top */
 }
 
 .canvas-container {
@@ -78,4 +83,46 @@ html, body {
     border: 2px transparent solid grey;
     cursor: pointer;
     filter: brightness(100%); /* Disable luminosity adjustments */
+}
+
+#download-button {
+    position: absolute;
+    font-size: 16px;
+    top: 20px; /* Adjust this value to control the vertical position */
+    right: 20px; /* Adjust this value to control the horizontal position */
+    padding: 10px 20px; /* Increase padding for a bigger button */
+    background-color: #deb933; /* Change background color */
+    color: white; /* Change text color */
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3); /* Add a shadow */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Add transitions for smooth hover effect */
+}
+
+#download-button:hover {
+    background-color: #a8a8a8; /* Change color on hover */
+    transform: scale(1.05); /* Add a slight scale effect on hover */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Adjust shadow on hover */
+}
+
+.back-button {
+    position: absolute;
+    font-size: 16px;
+    top: 20px; /* Adjust this value to control the vertical position */
+    left: 20px; /* Adjust this value to control the horizontal position */
+    padding: 10px 20px; /* Increase padding for a bigger button */
+    background-color: #deb933; /* Change background color */
+    color: white; /* Change text color */
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3); /* Add a shadow */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Add transitions for smooth hover effect */
+}
+
+.back-button:hover {
+    background-color: #a8a8a8; /* Change color on hover */
+    transform: scale(1.05); /* Add a slight scale effect on hover */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Adjust shadow on hover */
 }

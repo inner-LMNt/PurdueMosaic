@@ -107,3 +107,34 @@ function updateCurrentPrompt(prompt) {
 // Example usage:
 const initialPrompt = "Initial Prompt";
 updateCurrentPrompt(initialPrompt);
+
+// Function to capture canvas content and trigger download
+function downloadCanvas() {
+    const canvasContainer = document.querySelector('.canvas-container');
+
+    // Create a temporary canvas element
+    const tempCanvas = document.createElement('canvas');
+    const context = tempCanvas.getContext('2d');
+
+    // Set the dimensions of the temporary canvas to match the canvas container
+    tempCanvas.width = canvasContainer.offsetWidth;
+    tempCanvas.height = canvasContainer.offsetHeight;
+
+    // Draw the content of the canvas container onto the temporary canvas
+    context.drawImage(canvasContainer, 0, 0);
+
+    // Convert the canvas content to a data URL (PNG format)
+    const dataURL = tempCanvas.toDataURL('image/png');
+
+    // Create a download link
+    const downloadLink = document.createElement('a');
+    downloadLink.href = dataURL;
+    downloadLink.download = 'canvas.png'; // Set the default download filename
+
+    // Trigger a click event on the download link to start the download
+    downloadLink.click();
+}
+
+// Add a click event listener to the download button
+const downloadButton = document.getElementById('download-button');
+downloadButton.addEventListener('click', downloadCanvas);
