@@ -1,0 +1,52 @@
+/* styles.css */
+
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffffa1; /* Background color for the entire page */
+    flex-direction: column;
+    height: 100vh;
+}
+
+.canvas-container {
+    display: grid;
+    grid-template-columns: repeat(30, 20px);
+    grid-template-rows: repeat(30, 20px);
+}
+
+.pixel {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ccc;
+    background-color: white;
+    cursor: pointer;
+}
+
+.color-bar {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.color-presets {
+    display: flex;
+    margin-right: 10px; /* Add margin to separate the color wheel from presets */
+}
+
+.color-preset {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #000;
+    cursor: pointer;
+}
+
+.color-preset.selected {
+    border-width: 3px;
+}
+
+.color-space {
+    width: 10px; /* Add space between preset colors */
+}
