@@ -20,20 +20,38 @@ function setCurrentColor(color) {
     currentColor = color;
     const colorPresets = document.querySelectorAll(".color-preset");
 
-    // Remove the "selected" class from all presets
+    // Remove the "selected" class from all presets and reset border colors
     colorPresets.forEach(preset => {
         preset.classList.remove("selected");
+        preset.style.borderColor = "black"; // Reset border color to black for all presets
     });
 
     // Find the selected preset by data-color attribute and add the "selected" class
     const selectedPreset = document.querySelector(`[data-color="${color}"]`);
     if (selectedPreset) {
         selectedPreset.classList.add("selected");
+        selectedPreset.style.borderColor = darkenColor(color); // Apply darker border color
     }
 
     // Update the custom color button to reflect the selected color
     const customColorButton = document.getElementById("color-picker");
     customColorButton.value = color;
+}
+
+// Function to darken a given color
+function darkenColor(color) {
+    // Parse the color into its RGB components
+    const r = parseInt(color.slice(1, 3), 16);
+    const g = parseInt(color.slice(3, 5), 16);
+    const b = parseInt(color.slice(5, 7), 16);
+
+    // Darken the color by reducing each component by 40%
+    const darkenedR = Math.max(0, r - Math.round(r * 0.4));
+    const darkenedG = Math.max(0, g - Math.round(g * 0.4));
+    const darkenedB = Math.max(0, b - Math.round(b * 0.4));
+
+    // Convert the darkened components back to a HEX color
+    return `#${darkenedR.toString(16).padStart(2, "0")}${darkenedG.toString(16).padStart(2, "0")}${darkenedB.toString(16).padStart(2, "0")}`;
 }
 
 // Function to get the selected color from the color wheel
@@ -79,3 +97,13 @@ colorPicker.addEventListener("input", () => {
     const color = getColor();
     setCurrentColor(color);
 });
+
+// Function to update the current prompt
+function updateCurrentPrompt(prompt) {
+    const currentPromptElement = document.getElementById("current-prompt");
+    currentPromptElement.textContent = prompt;
+}
+
+// Example usage:
+const initialPrompt = "Initial Prompt";
+updateCurrentPrompt(initialPrompt);

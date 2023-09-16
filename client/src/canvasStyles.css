@@ -6,15 +6,33 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #ffffffa1; /* Background color for the entire page */
+    background-color: #f9d07d; /* Background color for the entire page */
     flex-direction: column;
     height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+.page-container {
+    background: rgba(255, 255, 255, 0.8); /* White background with slight transparency */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Add shadow to the container */
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.title {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 15px; /* Reduce margin at the bottom */
+    margin-top: 10px; /* Add margin at the top */
 }
 
 .canvas-container {
     display: grid;
     grid-template-columns: repeat(30, 20px);
     grid-template-rows: repeat(30, 20px);
+    margin-top: 10px; /* Add margin between the color bar and the canvas */
 }
 
 .pixel {
@@ -28,7 +46,8 @@ html, body {
 .color-bar {
     display: flex;
     align-items: center;
-    margin-top: 10px;
+    justify-content: center;
+    margin-top: 10px; /* Add margin at the top */
 }
 
 .color-presets {
@@ -49,4 +68,12 @@ html, body {
 
 .color-space {
     width: 10px; /* Add space between preset colors */
+}
+
+#color-picker {
+    width: 50px;
+    height: 30px;
+    border: 2px transparent solid grey;
+    cursor: pointer;
+    filter: brightness(100%); /* Disable luminosity adjustments */
 }
