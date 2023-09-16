@@ -19,6 +19,7 @@ function countdown() {
         timeLeft = timeStart;
         //add a function here to change prompt when timer reaches zero
         clearCanvas()
+        updateTimerVals()
     } else {
         timeLeft--;
         updateTimeLeft()
