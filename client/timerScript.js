@@ -1,9 +1,9 @@
 var timeVar = document.getElementById("timer")
-const timeStart = 15; //start time
-var timeLeft = 15; //initializing timeleft timer rn
+const timeStart = 15*60; //start time
+var timeLeft = 15*60; //initializing timeleft timer rn
 
 updateTimeLeft()
-var timerId = setInterval(countdown, 60000); //will run the countdown function every minute
+var timerId = setInterval(countdown, 1000); //will run the countdown function every minute
 
 function countdown() {
     if (timeLeft == 0) {
@@ -17,5 +17,5 @@ function countdown() {
 }
 
 function updateTimeLeft() {
-    timeVar.innerHTML = "Time Remaining: " + timeLeft + " Minutes";
+    timeVar.innerHTML = "Time Remaining: " + Math.floor(timeLeft / 60) + ":" + (timeLeft % 60).toString().padStart(2, '0');
 }
