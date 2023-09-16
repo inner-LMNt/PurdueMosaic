@@ -64,7 +64,7 @@ function getColor() {
 function createGrid() {
     const canvasContainer = document.querySelector(".canvas-container");
 
-    for (let i = 0; i < 30 * 30; i++) {
+    for (let i = 0; i < 30 * 50; i++) {
         const pixel = createPixel();
         canvasContainer.appendChild(pixel);
     }

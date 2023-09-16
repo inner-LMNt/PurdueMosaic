@@ -17,7 +17,7 @@ html, body {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Add shadow to the container */
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -30,9 +30,11 @@ html, body {
 
 .canvas-container {
     display: grid;
-    grid-template-columns: repeat(30, 20px);
+    flex-wrap: wrap;
+    grid-template-columns: repeat(50, 20px);
     grid-template-rows: repeat(30, 20px);
     margin-top: 10px; /* Add margin between the color bar and the canvas */
+    justify-content: center;
 }
 
 .pixel {
