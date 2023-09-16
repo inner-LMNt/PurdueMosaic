@@ -1,4 +1,4 @@
-import './index.css'
+import './canvasStyles.css';
 
 function App() {
 

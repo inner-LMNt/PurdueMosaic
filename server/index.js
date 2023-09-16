@@ -7,9 +7,10 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server)
 
+app.use(express.static('../client'))
+
 app.get('/', (req, res) => {
-    //../client/canvas.html
-  res.sendFile(join(__dirname, 'index.html'));
+  res.sendFile(join(__dirname, '../client/index.html'));
 });
 
 io.on('connection', (socket) => {

@@ -1,0 +1,128 @@
+/* styles.css */
+
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9d07d; /* Background color for the entire page */
+    flex-direction: column;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+.page-container {
+    background: rgba(255, 255, 255, 0.8); /* White background with slight transparency */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Add shadow to the container */
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    overflow: auto;
+    overflow-x: auto;
+    max-height: 100vh;
+    min-width: 100%;
+}
+
+.title {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 15px; /* Reduce margin at the bottom */
+    margin-top: 5px; /* Add margin at the top */
+}
+
+.canvas-container {
+    display: grid;
+    flex-wrap: wrap;
+    grid-template-columns: repeat(50, 20px);
+    grid-template-rows: repeat(30, 20px);
+    margin-top: 10px; /* Add margin between the color bar and the canvas */
+    justify-content: center;
+}
+
+.pixel {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ccc;
+    background-color: white;
+    cursor: pointer;
+}
+
+.color-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px; /* Add margin at the top */
+}
+
+.color-presets {
+    display: flex;
+    margin-right: 10px; /* Add margin to separate the color wheel from presets */
+}
+
+.color-preset {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #000;
+    cursor: pointer;
+}
+
+.color-preset.selected {
+    border-width: 3px;
+}
+
+.color-space {
+    width: 10px; /* Add space between preset colors */
+}
+
+#color-picker {
+    width: 50px;
+    height: 30px;
+    border: 2px transparent solid grey;
+    cursor: pointer;
+    filter: brightness(100%); /* Disable luminosity adjustments */
+}
+
+#download-button {
+    position: absolute;
+    font-size: 16px;
+    top: 20px; /* Adjust this value to control the vertical position */
+    right: 20px; /* Adjust this value to control the horizontal position */
+    padding: 10px 20px; /* Increase padding for a bigger button */
+    background-color: #deb933; /* Change background color */
+    color: white; /* Change text color */
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3); /* Add a shadow */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Add transitions for smooth hover effect */
+}
+
+#download-button:hover {
+    background-color: #a8a8a8; /* Change color on hover */
+    transform: scale(1.05); /* Add a slight scale effect on hover */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Adjust shadow on hover */
+}
+
+.back-button {
+    position: absolute;
+    font-size: 16px;
+    top: 20px; /* Adjust this value to control the vertical position */
+    left: 20px; /* Adjust this value to control the horizontal position */
+    padding: 10px 20px; /* Increase padding for a bigger button */
+    background-color: #deb933; /* Change background color */
+    color: white; /* Change text color */
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3); /* Add a shadow */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Add transitions for smooth hover effect */
+}
+
+.back-button:hover {
+    background-color: #a8a8a8; /* Change color on hover */
+    transform: scale(1.05); /* Add a slight scale effect on hover */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Adjust shadow on hover */
+}
