@@ -35,8 +35,26 @@
         <div class="canvas-container">
             <!-- This div will hold your grid of pixels -->
         </div>
+        <h3 id="timer"></h3>
     </div>
     <script src="src/canvasScript.js"></script>
     <script type="module" src="/src/main.jsx"></script>
+    <script> //timer script
+        var timeVar = document.getElementById("timer")
+        var timeStart = 30; //start time
+        var timeLeft = 30; //initializing timeleft timer rn
+    
+        var timerId = setInterval(countdown, 1000); //will run the countdown function every second
+        
+        function countdown() {
+            if (timeLeft == -1) {
+                timeLeft = timeStart;
+                //add a function here to change prompt when timer reaches zero
+            } else {
+                timeVar.innerHTML = "Time Remaining: " + timeLeft;
+                timeLeft--;
+            }
+        }
+    </script>
 </body>
 </html>
