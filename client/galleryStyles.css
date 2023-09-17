@@ -12,7 +12,7 @@ html, body {
 
 .page-container {
     background: rgba(255, 255, 255, 0.8); /* White background with slight transparency */
-    padding: 20px;
+    padding: 47px;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Add shadow to the container */
     max-width: 1200px; /* Wider page container */
