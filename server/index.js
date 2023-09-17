@@ -15,6 +15,8 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
+const pixels = new Array(30 * 50).fill('#ffffff');
+
 // countdown time
 let remainingTime = 10 * 60; 
 let startTime = 10 * 60;
@@ -64,8 +66,8 @@ io.on('connection', (socket) => {
         io.emit('userCount', userCount)
     });
 
-    const pixels = new Array(30 * 50).fill('#ffffff');
-    socket.emit('initialPixels', pixels);   
+    socket.emit('initialPixels', pixels);  
+    console.log(pixels); 
 
     if (flag) {
         socket.emit('updatePrompt', initPrompt);
