@@ -1,5 +1,6 @@
 var timeVar = document.getElementById("timer");
 var timeLeft = 0; // Initialize timeLeft to 0
+var timeStart = 1 * 60;
 var timerId;
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -24,7 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function countdown() {
         console.log("Countdown function called");
-        if (timeLeft === 0) {
+        if (timeLeft <= 0) {
+            timeLeft = timeStart;
             // Handle when the timer reaches zero (e.g., change prompt, clear canvas)
             clearCanvas();
             updateTimerVals();
@@ -35,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateTimeLeft() {
-        timeVar.innerHTML = "Time Remaining: " + Math.floor(timeLeft / 60) + ":" + (timeLeft % 60).toString().padStart(2, '0');
+        timeVar.innerHTML = "Time Until Mosaic Clears: " + Math.floor(timeLeft / 60) + ":" + (timeLeft % 60).toString().padStart(2, '0');
     }
 
     // Updates the current prompt
