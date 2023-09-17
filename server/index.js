@@ -15,9 +15,8 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
-const pixels = new Array(30 * 50).fill('#ffffff'); // Initialize pixels with default color
-let remainingTime = 1 * 10; // Initialize remaining time here
-let startTime = 1 * 10;
+let remainingTime = 1 * 20; // Initialize remaining time here
+let startTime = 1 * 20;
 let timerId;
 let flag = true;
 
@@ -41,7 +40,7 @@ function getRandomPrompt() {
 io.on('connection', (socket) => {
     console.log('A user connected');
 
-    // Send the initial pixel data to the client
+    const pixels = new Array(30 * 50).fill('#ffffff');
     socket.emit('initialPixels', pixels);   
 
     if (flag) {

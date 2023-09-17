@@ -1,6 +1,5 @@
 // canvasScript.js
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("before grid creation");
     var socket = io();
 
     // Listen for the 'initialPixels' event to get the initial pixel data from the server
