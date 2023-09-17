@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateTimeLeft() {
-        timeVar.innerHTML = "Time Until Mosaic Clears: " + Math.floor(timeLeft / 60) + ":" + (timeLeft % 60).toString().padStart(2, '0');
+        timeVar.innerHTML = "Time Until Mosaic Clears - " + Math.floor(timeLeft / 60) + ":" + (timeLeft % 60).toString().padStart(2, '0');
     }
 
     function updateCurrentPrompt(newPrompt) {
