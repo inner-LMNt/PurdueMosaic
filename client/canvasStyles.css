@@ -1,6 +1,7 @@
 html, body {
     height: 100%;
     margin: 0;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,15 +14,12 @@ html, body {
 .page-container {
     background: rgba(255, 255, 255, 0.8); 
     padding: 20px;
+    width: 100%;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); 
-    max-width: 1200px;
     margin: 0 auto;
     position: relative;
     overflow: auto;
-    overflow-x: auto;
-    max-height: 100vh;
-    min-width: 100%;
 }
 
 .title {
@@ -124,7 +122,7 @@ html, body {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); 
 }
 
-.back-button {
+.gallery-button {
     position: absolute;
     font-size: 16px;
     top: 20px;
@@ -139,7 +137,7 @@ html, body {
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
-.back-button:hover {
+.gallery-button:hover {
     background-color: #a8a8a8;
     transform: scale(1.05); 
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); 
