@@ -66,11 +66,16 @@ html, body {
     width: 30px;
     height: 30px;
     border: 1px solid #000;
+    border-radius: 5px; /* Add rounded corners */
     cursor: pointer;
+    transition: width 0.2s, height 0.2s, border-radius 0.2s, filter 0.2s; /* Add transitions for smooth changes when selected */
 }
 
 .color-preset.selected {
-    border-width: 3px;
+    width: 35px; /* Increase width when selected */
+    height: 35px; /* Increase height when selected */
+    border-radius: 7px; /* Increase border-radius for a more rounded appearance when selected */
+    filter: brightness(90%); /* Adjust filter for brightness when selected */
 }
 
 .color-space {
@@ -83,6 +88,21 @@ html, body {
     border: 2px transparent solid grey;
     cursor: pointer;
     filter: brightness(100%); /* Disable luminosity adjustments */
+}
+
+#eyedropper-button {
+    width: 30px; /* Set the width to match the preset color buttons */
+    height: 30px; /* Set the height to match the preset color buttons */
+    border: 1px solid #000;
+    border-radius: 5px; /* Add rounded corners */
+    transition: width 0.2s, height 0.2s, border-radius 0.2s, filter 0.2s; /* Add transitions for smooth changes */
+}
+
+#eyedropper-button.active {
+    width: 35px; /* Set the expanded width */
+    height: 35px; /* Set the expanded height */
+    border-radius: 7px; /* Increase border-radius for a more rounded appearance */
+    filter: brightness(70%); /* Darken the image when active */
 }
 
 #download-button {

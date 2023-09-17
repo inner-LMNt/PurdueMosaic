@@ -1,4 +1,4 @@
-// script.js
+// canvasScript.js
 document.addEventListener('DOMContentLoaded', () => {
     console.log("before grid creation");
     var socket = io();
@@ -20,6 +20,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   
     let currentColor = '#000000'; // Default color
+
+    function rgbToHex(rgb) {
+        // Split the RGB string into individual values
+        const rgbArray = rgb.match(/\d+/g);
+    
+        if (rgbArray) {
+            // Convert each value to a hexadecimal string and join them
+            return "#" + rgbArray.map(value => {
+                const hex = parseInt(value, 10).toString(16); // Convert to base 16 (hex)
+                return hex.length === 1 ? "0" + hex : hex; // Ensure two digits
+            }).join("");
+        }
+    
+        return "#000000"; // Default to black if no valid RGB value
+    }
   
     // Function to create a single pixel element
     function createPixel() {
@@ -30,11 +45,12 @@ document.addEventListener('DOMContentLoaded', () => {
       pixel.addEventListener('click', () => {
         const color = currentColor;
         const index = Array.from(pixel.parentNode.children).indexOf(pixel);
-        pixel.style.backgroundColor = color; // Set the selected color
-  
+        if (!isEyedropperActive) {
+            pixel.style.backgroundColor = color; // Set the selected color
         // Send the pixel update to the server
         socket.emit('updatePixel', { index, color });
         console.log('Emitted initial pixels to a user');
+        }
       });
   
       return pixel;
@@ -59,9 +75,72 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Update the custom color button to reflect the selected color
-        const customColorButton = document.getElementById("color-picker");
-        customColorButton.value = color;
+        updateColorPickerValue();
     }
+
+    // Get the eyedropper button image element
+    const eyedropperButton = document.getElementById('eyedropper-button');
+
+    let isEyedropperActive = false; // Flag to track eyedropper activation
+
+    // Function to toggle the eyedropper tool
+    function toggleEyedropper() {
+        isEyedropperActive = !isEyedropperActive; // Toggle the flag
+    
+        // Deselect other options and collapse if needed
+        const colorPresets = document.querySelectorAll(".color-preset");
+        colorPresets.forEach(preset => {
+            preset.classList.remove("selected");
+            preset.style.width = "30px"; // Reset width
+            preset.style.height = "30px"; // Reset height
+        });
+    
+        if (isEyedropperActive) {
+            // If the eyedropper tool is activated
+            eyedropperButton.classList.add('active'); // Add a CSS class to darken the button
+            addEyedropperEventListeners(); // Enable the click event listeners on pixels
+        } else {
+            // If the eyedropper tool is deactivated
+            eyedropperButton.classList.remove('active'); // Remove the CSS class to restore the button
+            removeEyedropperEventListeners(); // Remove the click event listeners on pixels
+        }
+    }
+
+    function addEyedropperEventListeners() {
+        const pixels = document.querySelectorAll('.pixel');
+        pixels.forEach(pixel => {
+            pixel.addEventListener('click', () => {
+                if (isEyedropperActive) {
+                    const pixelColor = window.getComputedStyle(pixel).backgroundColor;
+                    currentColor = pixelColor; // Store the selected color
+                    document.getElementById("color-picker").value = currentColor; // Update color picker
+                    console.log(`Selected color: ${currentColor}`);
+                    updateColorPickerValueRGB();
+                } else {
+                    // If the eyedropper is not active, allow canvas editing as usual
+                    const color = currentColor;
+                    const index = Array.from(pixel.parentNode.children).indexOf(pixel);
+                    pixel.style.backgroundColor = color; // Set the selected color
+                    // Send the pixel update to the server
+                    socket.emit('updatePixel', { index, color });
+                }
+            });
+        });
+    }
+    
+
+    // Function to remove click event listeners from pixels
+    function removeEyedropperEventListeners() {
+        const pixels = document.querySelectorAll('.pixel');
+        pixels.forEach(pixel => {
+            pixel.removeEventListener('click', () => {
+                // No action needed here, just remove the event listener
+            });
+        });
+    }
+
+    // Add a click event listener to the eyedropper button to toggle the tool
+    eyedropperButton.addEventListener('click', toggleEyedropper);
 
     // Function to darken a given color
     function darkenColor(color) {
@@ -83,6 +162,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function getColor() {
         const colorPicker = document.getElementById("color-picker");
         return colorPicker.value;
+    }
+
+    function updateColorPickerValue() {
+        const colorPicker = document.getElementById("color-picker");
+        colorPicker.value = currentColor;
+        console.log(`Custom color has been updated to: ${currentColor}`);
+    }
+
+    function updateColorPickerValueRGB() {
+        const colorPicker = document.getElementById("color-picker");
+        colorPicker.value = rgbToHex(currentColor);
+        console.log(`Custom color has been updated to: ${currentColor}`);
     }
 
     function createGrid() {
@@ -111,7 +202,18 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Add click event to set the current color when a preset is clicked
         preset.addEventListener("click", () => {
-            setCurrentColor(color);
+            if (isEyedropperActive) {
+                toggleEyedropper(); // Deactivate the eyedropper tool
+            } else {
+                // Expand the clicked preset
+                colorPresets.forEach(p => {
+                    p.style.width = "30px"; // Reset width for all presets
+                    p.style.height = "30px"; // Reset height for all presets
+                });
+                preset.style.width = "35px"; // Expand the width when selected
+                preset.style.height = "35px"; // Expand the height when selected
+                setCurrentColor(color);
+            }
         });
 
         // Initialize the current color based on the default color
@@ -124,6 +226,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const colorPicker = document.getElementById("color-picker");
     colorPicker.value = currentColor;
     colorPicker.addEventListener("input", () => {
+        if (isEyedropperActive) {
+            toggleEyedropper(); // Deactivate the eyedropper tool
+        }
         const color = getColor();
         setCurrentColor(color);
     });
