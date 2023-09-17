@@ -48,7 +48,12 @@ document.addEventListener('DOMContentLoaded', function () {
             "Pete's Za",
             "Engineering Fountain",
             "World's Biggest Drum",
-            "Unfinished P"
+            "Unfinished P",
+            "Bell Tower",
+            "Boilermaker Special",
+            "Ross-Ade Brigade",
+            "Fountain Run",
+            "BONUS PROMPT: Free draw!"
         ];
         const newPrompt = prompts[Math.floor(Math.random() * prompts.length)];
         const currentPromptElement = document.getElementById("current-prompt");
