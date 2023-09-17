@@ -26,7 +26,20 @@ const prompts = [
     "Pete's Za",
     "Engineering Fountain",
     "World's Biggest Drum",
-    "Unfinished P"
+    "Unfinished P",
+    "Boilermaker Special",
+    "Ross-Ade Brigade",
+    "Fountain Run",
+    "Harry's Chocolate Shop",
+    "Purdue Airport",
+    "Purdue Arch",
+    "Purdue (anything about Purdue)",
+    "Moon Landing",
+    "Lion Statue",
+    "BoilerBall",
+    "Indiana University",
+    "Den Pop",
+    "BONUS PROMPT: Free draw!"
 ];
 
 var initPrompt = getRandomPrompt();
