@@ -14,6 +14,11 @@ document.addEventListener('DOMContentLoaded', function () {
         updateTimeLeft();
     });
 
+    // Listen for updates to the current prompt from the server
+    socket.on('updatePrompt', (newPrompt) => {
+        updateCurrentPrompt(newPrompt);
+    });
+
     // Create a function to start the timer
     function startTimer() {
         clearInterval(timerId); // Clear any existing timer
@@ -27,7 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("Countdown function called");
         if (timeLeft <= 0) {
             timeLeft = timeStart;
-            // Handle when the timer reaches zero (e.g., change prompt, clear canvas)
             clearCanvas();
             updateTimerVals();
         } else {
@@ -41,35 +45,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Updates the current prompt
-    function changeCurrentPrompt() {
-        const prompts = [
-            "Bell Tower",
-            "Purdue Pete",
-            "Pete's Za",
-            "Engineering Fountain",
-            "World's Biggest Drum",
-            "Unfinished P",
-            "Bell Tower",
-            "Boilermaker Special",
-            "Ross-Ade Brigade",
-            "Fountain Run",
-            "BONUS PROMPT: Free draw!"
-        ];
-        const newPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+    function updateCurrentPrompt(newPrompt) {
         const currentPromptElement = document.getElementById("current-prompt");
         currentPromptElement.innerHTML = newPrompt;
     }
 
-    // Call the initial changeCurrentPrompt function
-    changeCurrentPrompt();
+    // Call the initial updateCurrentPrompt function
+    updateCurrentPrompt("Loading..."); // You can set an initial message
 
     function updateTimerVals() {
         updateTimeLeft();
-        changeCurrentPrompt();
     }
 
-    // Function to clear canvas (you can implement this)
-    function clearCanvas() {
-        // Implement your canvas clearing logic here
-    }
 });

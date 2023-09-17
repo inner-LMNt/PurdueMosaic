@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const path = require('path');
 const { Server } = require('socket.io');
+const { getSystemErrorName } = require('util');
 
 const app = express();
 const server = http.createServer(app);
@@ -15,15 +16,40 @@ app.get('/', (req, res) => {
 });
 
 const pixels = new Array(30 * 50).fill('#ffffff'); // Initialize pixels with default color
-let remainingTime = 1 * 60; // Initialize remaining time here
-let startTime = 1 * 60;
+let remainingTime = 1 * 10; // Initialize remaining time here
+let startTime = 1 * 10;
 let timerId;
+let flag = true;
+
+const prompts = [
+    "Bell Tower",
+    "Purdue Pete",
+    "Pete's Za",
+    "Engineering Fountain",
+    "World's Biggest Drum",
+    "Unfinished P"
+];
+
+var initPrompt = getRandomPrompt();
+var randomPrompt = "";
+
+function getRandomPrompt() {
+    const randomIndex = Math.floor(Math.random() * prompts.length);
+    return prompts[randomIndex];
+}
 
 io.on('connection', (socket) => {
     console.log('A user connected');
 
     // Send the initial pixel data to the client
-    socket.emit('initialPixels', pixels);
+    socket.emit('initialPixels', pixels);   
+
+    if (flag) {
+        socket.emit('updatePrompt', initPrompt);
+    }
+    else {
+        socket.emit('updatePrompt', randomPrompt);
+    }
 
     // Handle messages from clients to update pixels
     socket.on('updatePixel', (data) => {
@@ -64,8 +90,11 @@ function startTimer() {
             remainingTime--;
         }
         else {
+            flag = false;
             remainingTime = startTime;
             io.emit('timerZeroReached');
+            randomPrompt = getRandomPrompt();
+            io.emit('updatePrompt', randomPrompt);
         }
         // Broadcast the updated remaining time to all clients
         io.emit('updateRemainingTime', remainingTime);
