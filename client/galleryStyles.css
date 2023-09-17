@@ -29,6 +29,10 @@ html, body {
     text-align: center;
     margin-bottom: 15px; /* Reduce margin at the bottom */
     margin-top: 5px; /* Add margin at the top */
+    display: flex;
+    align-items: center; /* center stuff vertically */
+    justify-content: center; /* center image + text */
+    position: relative; 
 }
 
 .canvas-button {
@@ -50,4 +54,12 @@ html, body {
     background-color: #a8a8a8; /* Change color on hover */
     transform: scale(1.05); /* Add a slight scale effect on hover */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Adjust shadow on hover */
+}
+
+.logo-image {
+    width: 110px;
+    position: absolute;
+    height: auto; 
+    vertical-align:middle; 
+    left: -115px;
 }
