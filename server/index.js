@@ -37,8 +37,18 @@ function getRandomPrompt() {
     return prompts[randomIndex];
 }
 
+let userCount = 0;
+
 io.on('connection', (socket) => {
     console.log('A user connected');
+    userCount++;
+    io.emit('userCount', userCount);
+
+    socket.on('disconnect', () => {
+        console.log('A user disconnected');
+        userCount--;
+        io.emit('userCount', userCount)
+    });
 
     const pixels = new Array(30 * 50).fill('#ffffff');
     socket.emit('initialPixels', pixels);   
@@ -57,11 +67,6 @@ io.on('connection', (socket) => {
 
         // Broadcast the updated pixel to all connected clients
         io.emit('updatePixel', { index: data.index, color: data.color });
-    });
-
-    // Handle disconnection
-    socket.on('disconnect', () => {
-        console.log('A user disconnected');
     });
 
     // Listen for requests to update remaining time

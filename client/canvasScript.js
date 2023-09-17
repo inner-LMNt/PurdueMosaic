@@ -2,6 +2,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     var socket = io();
 
+    socket.on('userCount', (count) => {
+        const userCountElement = document.getElementById('user-count')
+        userCountElement.innerHTML = "Active Users: " + String(Math.ceil(count/2));
+    })
     // Listen for the 'initialPixels' event to get the initial pixel data from the server
     socket.on('initialPixels', (initialPixels) => {
       // Update the pixel colors based on the initial data from the server

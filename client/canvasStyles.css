@@ -150,3 +150,7 @@ html, body {
     vertical-align:middle; 
     right: 25px; 
 }
+
+.active-count {
+    margin-left: 190px;
+}
