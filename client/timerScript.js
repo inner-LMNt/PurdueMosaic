@@ -1,43 +1,68 @@
-var timeVar = document.getElementById("timer")
-const timeStart = 15*60; //start time
-var timeLeft = 15*60; //initializing timeleft timer rn
+var timeVar = document.getElementById("timer");
+var timeLeft = 0; // Initialize timeLeft to 0
+var timerId;
 
-const prompts = [
-    "Bell Tower",
-    "Purdue Pete",
-    "Pete's Za",
-    "Engineering Fountain",
-    "World's Biggest Drum",
-    "Unfinished P"
-]
+document.addEventListener('DOMContentLoaded', function () {
+    console.log("DOMContentLoaded event fired");
 
-updateTimerVals()
-var timerId = setInterval(countdown, 1000); //will run the countdown function every minute
+    const socket = io();
 
-function countdown() {
-    if (timeLeft == 0) {
-        timeLeft = timeStart;
-        //add a function here to change prompt when timer reaches zero
-        clearCanvas()
-        updateTimerVals()
-    } else {
-        timeLeft--;
-        updateTimeLeft()
+    // Listen for updates to the remaining time from the server
+    socket.on('updateRemainingTime', (remainingTime) => {
+        timeLeft = remainingTime;
+        updateTimeLeft();
+    });
+
+    // Create a function to start the timer
+    function startTimer() {
+        clearInterval(timerId); // Clear any existing timer
+        timerId = setInterval(countdown, 1000); // Start a new timer
     }
-}
 
-function updateTimeLeft() {
-    timeVar.innerHTML = "Time Remaining: " + Math.floor(timeLeft / 60) + ":" + (timeLeft % 60).toString().padStart(2, '0');
-}
+    // Call the initial startTimer function
+    startTimer();
 
-//updates current prompt
-function changeCurrentPrompt() { 
-    const newPrompt = prompts[Math.floor(Math.random() * prompts.length)];
-    const currentPromptElement = document.getElementById("current-prompt");
-    currentPromptElement.innerHTML = newPrompt;
-}
+    function countdown() {
+        console.log("Countdown function called");
+        if (timeLeft === 0) {
+            // Handle when the timer reaches zero (e.g., change prompt, clear canvas)
+            clearCanvas();
+            updateTimerVals();
+        } else {
+            timeLeft--;
+            updateTimeLeft();
+        }
+    }
 
-function updateTimerVals() { //call when you need to update time remaining and change prompt
-    updateTimeLeft()
-    changeCurrentPrompt()
-}
+    function updateTimeLeft() {
+        timeVar.innerHTML = "Time Remaining: " + Math.floor(timeLeft / 60) + ":" + (timeLeft % 60).toString().padStart(2, '0');
+    }
+
+    // Updates the current prompt
+    function changeCurrentPrompt() {
+        const prompts = [
+            "Bell Tower",
+            "Purdue Pete",
+            "Pete's Za",
+            "Engineering Fountain",
+            "World's Biggest Drum",
+            "Unfinished P"
+        ];
+        const newPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+        const currentPromptElement = document.getElementById("current-prompt");
+        currentPromptElement.innerHTML = newPrompt;
+    }
+
+    // Call the initial changeCurrentPrompt function
+    changeCurrentPrompt();
+
+    function updateTimerVals() {
+        updateTimeLeft();
+        changeCurrentPrompt();
+    }
+
+    // Function to clear canvas (you can implement this)
+    function clearCanvas() {
+        // Implement your canvas clearing logic here
+    }
+});

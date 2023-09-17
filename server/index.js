@@ -15,6 +15,8 @@ app.get('/', (req, res) => {
 });
 
 const pixels = new Array(30 * 50).fill('#ffffff'); // Initialize pixels with default color
+let remainingTime = 1 * 60; // Initialize remaining time here
+let timerId;
 
 io.on('connection', (socket) => {
   console.log('A user connected');
@@ -35,7 +37,33 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('A user disconnected');
   });
+
+  // Listen for requests to update remaining time
+  socket.on('updateRemainingTime', (newRemainingTime) => {
+    // Update the remaining time
+    remainingTime = newRemainingTime;
+
+    // Broadcast the updated remaining time to all clients
+    io.emit('updateRemainingTime', remainingTime);
+  });
+
+  // Send the initial remaining time to the connected client
+  socket.emit('updateRemainingTime', remainingTime);
 });
+
+// Function to start the timer
+function startTimer() {
+  timerId = setInterval(() => {
+    if (remainingTime > 0) {
+      remainingTime--;
+    }
+    // Broadcast the updated remaining time to all clients
+    io.emit('updateRemainingTime', remainingTime);
+  }, 1000);
+}
+
+// Start the timer when the server is initialized
+startTimer();
 
 const PORT = process.env.PORT || 3000;
 
