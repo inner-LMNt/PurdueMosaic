@@ -65,6 +65,7 @@ function startTimer() {
         }
         else {
             remainingTime = startTime;
+            io.emit('timerZeroReached');
         }
         // Broadcast the updated remaining time to all clients
         io.emit('updateRemainingTime', remainingTime);

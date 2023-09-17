@@ -18,6 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const pixels = document.querySelectorAll('.pixel');
       pixels[data.index].style.backgroundColor = data.color;
     });
+
+    socket.on('timerZeroReached', () => {
+        clearCanvas();
+        console.log('Grid reset.');
+    });
   
     let currentColor = '#000000'; // Default color
 
