@@ -4,18 +4,18 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f9d07d; /* Background color for the entire page */
+    background-color: #f9d07d; 
     flex-direction: column;
     height: 100vh;
     font-family: 'Trebuchet MS', sans-serif;
 }
 
 .page-container {
-    background: rgba(255, 255, 255, 0.8); /* White background with slight transparency */
+    background: rgba(255, 255, 255, 0.8); 
     padding: 47px;
     border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Add shadow to the container */
-    max-width: 1200px; /* Wider page container */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    max-width: 1200px; 
     margin: 0 auto;
     position: relative;
     overflow: auto;
@@ -24,36 +24,45 @@ html, body {
     min-width: 100%;
 }
 
+.canvas-container {
+    display: grid;
+    flex-wrap: wrap;
+    grid-template-columns: repeat(50, 20px);
+    grid-template-rows: repeat(30, 20px);
+    margin-top: 10px;
+    justify-content: center;
+}
+
 .title {
     font-size: 24px;
     text-align: center;
-    margin-bottom: 15px; /* Reduce margin at the bottom */
-    margin-top: 5px; /* Add margin at the top */
+    margin-bottom: 15px;
+    margin-top: 5px; 
     display: flex;
-    align-items: center; /* center stuff vertically */
-    justify-content: center; /* center image + text */
+    align-items: center; 
+    justify-content: center; 
     position: relative; 
 }
 
 .canvas-button {
     position: absolute;
     font-size: 16px;
-    top: 20px; /* Adjust this value to control the vertical position */
-    left: 20px; /* Adjust this value to control the horizontal position */
-    padding: 10px 20px; /* Increase padding for a bigger button */
-    background-color: #deb933; /* Change background color */
-    color: white; /* Change text color */
+    top: 20px; 
+    left: 20px; 
+    padding: 10px 20px; 
+    background-color: #deb933; 
+    color: white;
     border: none;
     cursor: pointer;
     border-radius: 5px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3); /* Add a shadow */
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Add transitions for smooth hover effect */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3); 
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; 
 }
 
 .canvas-button:hover {
-    background-color: #a8a8a8; /* Change color on hover */
-    transform: scale(1.05); /* Add a slight scale effect on hover */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Adjust shadow on hover */
+    background-color: #a8a8a8;
+    transform: scale(1.05); 
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .logo-image {
@@ -62,4 +71,12 @@ html, body {
     height: auto; 
     vertical-align:middle; 
     left: -115px;
+}
+
+.pixel {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ccc;
+    background-color: white;
+    cursor: pointer;
 }

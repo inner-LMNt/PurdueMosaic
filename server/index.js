@@ -8,14 +8,15 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// Serve static files
+// static files
 app.use(express.static(path.join(__dirname, '../client')));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
-let remainingTime = 10 * 60; // Initialize remaining time here
+// countdown time
+let remainingTime = 10 * 60; 
 let startTime = 10 * 60;
 let timerId;
 let flag = true;
@@ -73,34 +74,25 @@ io.on('connection', (socket) => {
         socket.emit('updatePrompt', randomPrompt);
     }
 
-    // Handle messages from clients to update pixels
     socket.on('updatePixel', (data) => {
-        // Update the pixel color
         pixels[data.index] = data.color;
 
-        // Broadcast the updated pixel to all connected clients
         io.emit('updatePixel', { index: data.index, color: data.color });
     });
 
-    // Listen for requests to update remaining time
     socket.on('updateRemainingTime', (newRemainingTime) => {
-        // Update the remaining time
         remainingTime = newRemainingTime;
 
-        // Broadcast the updated remaining time to all clients
         io.emit('updateRemainingTime', remainingTime);
     });
 
-    // Send the initial remaining time to the connected client
     socket.emit('updateRemainingTime', remainingTime);
 
-    // Start the timer when the first client connects
     if (!timerId) {
         startTimer();
     }
 });
 
-// Function to start the timer
 function startTimer() {
     timerId = setInterval(() => {
         if (remainingTime > 0) {
@@ -113,7 +105,6 @@ function startTimer() {
             randomPrompt = getRandomPrompt();
             io.emit('updatePrompt', randomPrompt);
         }
-        // Broadcast the updated remaining time to all clients
         io.emit('updateRemainingTime', remainingTime);
     }, 1000);
 }

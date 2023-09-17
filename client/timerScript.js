@@ -1,5 +1,5 @@
 var timeVar = document.getElementById("timer");
-var timeLeft = 0; // Initialize timeLeft to 0
+var timeLeft = 0;
 var timeStart = 1 * 60;
 var timerId;
 
@@ -19,13 +19,11 @@ document.addEventListener('DOMContentLoaded', function () {
         updateCurrentPrompt(newPrompt);
     });
 
-    // Create a function to start the timer
     function startTimer() {
-        clearInterval(timerId); // Clear any existing timer
-        timerId = setInterval(countdown, 1000); // Start a new timer
+        clearInterval(timerId); 
+        timerId = setInterval(countdown, 1000); 
     }
 
-    // Call the initial startTimer function
     startTimer();
 
     function countdown() {
@@ -44,14 +42,12 @@ document.addEventListener('DOMContentLoaded', function () {
         timeVar.innerHTML = "Time Until Mosaic Clears: " + Math.floor(timeLeft / 60) + ":" + (timeLeft % 60).toString().padStart(2, '0');
     }
 
-    // Updates the current prompt
     function updateCurrentPrompt(newPrompt) {
         const currentPromptElement = document.getElementById("current-prompt");
         currentPromptElement.innerHTML = newPrompt;
     }
 
-    // Call the initial updateCurrentPrompt function
-    updateCurrentPrompt("Loading..."); // You can set an initial message
+    updateCurrentPrompt("Loading..."); 
 
     function updateTimerVals() {
         updateTimeLeft();
