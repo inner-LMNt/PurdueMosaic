@@ -15,8 +15,8 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
-let remainingTime = 1 * 20; // Initialize remaining time here
-let startTime = 1 * 20;
+let remainingTime = 10 * 60; // Initialize remaining time here
+let startTime = 10 * 60;
 let timerId;
 let flag = true;
 
