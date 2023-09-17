@@ -21,3 +21,5 @@ node index.js
 ```
 
 After you've started the dev server you can access it by going to [localhost:3000](http://localhost:3000).
+
+Have fun!! :)
