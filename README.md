@@ -2,6 +2,7 @@
 Our Code for Purdue Helloworld 2023.
 
 A collaborative synchronous pixel drawing app using Socket.IO.
+
 Created by @inner-LMNt, @alexxliu, @alex2tu & @maxluo81 at Purdue Helloworld in September 2023.
 
 Live at [**https://purdue-mosaic.onrender.com/**](https://purdue-mosaic.onrender.com/)
