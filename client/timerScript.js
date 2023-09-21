@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("Countdown function called");
         if (timeLeft <= 0) {
             timeLeft = timeStart;
-            clearCanvas();
+            // clearCanvas();
             updateTimerVals();
         } else {
             timeLeft--;
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateTimeLeft() {
-        timeVar.innerHTML = "Time Until Mosaic Clears: " + Math.floor(timeLeft / 60) + ":" + (timeLeft % 60).toString().padStart(2, '0');
+        timeVar.innerHTML = "Time Until New Prompt: " + Math.floor(timeLeft / 60) + ":" + (timeLeft % 60).toString().padStart(2, '0'); // Time Until Mosaic Clears
     }
 
     function updateCurrentPrompt(newPrompt) {

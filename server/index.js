@@ -67,7 +67,7 @@ io.on('connection', (socket) => {
     });
 
     socket.emit('initialPixels', pixels);  
-    console.log(pixels); 
+    // console.log(pixels); 
 
     if (flag) {
         socket.emit('updatePrompt', initPrompt);
