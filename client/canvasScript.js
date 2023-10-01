@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     socket.on('timerZeroReached', () => {
-        clearCanvas();
-        console.log('Grid reset.');
+        // clearCanvas();
+        // console.log('Grid reset.');
     });
   
     let currentColor = '#000000'; 
