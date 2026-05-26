@@ -17,9 +17,23 @@ app.get('/', (req, res) => {
 
 const pixels = new Array(30 * 50).fill('#ffffff');
 
+const maxHistory = 6;
+const history = [
+    { type: 'image', src: './assets/prevCanvas/canvas-5.png', prompt: 'Bell Tower' },
+    { type: 'image', src: './assets/prevCanvas/canvas-6.png', prompt: 'Ross-Ade Brigade' },
+    { type: 'image', src: './assets/prevCanvas/canvas-8.png', prompt: 'World\'s Biggest Drum' },
+    { type: 'image', src: './assets/prevCanvas/canvas-13.png', prompt: 'Den Pop' },
+    { type: 'image', src: './assets/prevCanvas/canvas-9.png', prompt: 'Free draw!' },
+    { type: 'image', src: './assets/prevCanvas/canvas-12.png', prompt: 'Moon Landing' },
+];
+
+app.get('/api/history', (req, res) => {
+    res.json(history);
+});
+
 // countdown time
-let remainingTime = 10 * 60; 
-let startTime = 10 * 60;
+let remainingTime = 5 * 60; 
+let startTime = 5 * 60;
 let timerId;
 let flag = true;
 
@@ -42,7 +56,7 @@ const prompts = [
     "BoilerBall",
     "Indiana University",
     "Den Pop",
-    "BONUS PROMPT: Free draw!"
+    "Free draw!"
 ];
 
 var initPrompt = getRandomPrompt();
@@ -101,6 +115,21 @@ function startTimer() {
             remainingTime--;
         }
         else {
+            const isEmpty = pixels.every(color => color === '#ffffff' || color === '#fff');
+            if (!isEmpty) {
+                history.push({
+                    type: 'pixels',
+                    prompt: flag ? initPrompt : randomPrompt,
+                    pixels: [...pixels]
+                });
+                if (history.length > maxHistory) {
+                    history.shift();
+                }
+            }
+            
+            pixels.fill('#ffffff');
+            io.emit('initialPixels', pixels);
+
             flag = false;
             remainingTime = startTime;
             io.emit('timerZeroReached');
