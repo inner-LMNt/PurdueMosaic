@@ -1,59 +1,73 @@
 document.addEventListener('DOMContentLoaded', () => {
     var socket = io();
 
+    // Global array to cache pixel DOM nodes for O(1) updates
+    let pixelsArray = [];
+    let currentColor = '#000000'; 
+    let isEyedropperActive = false;
+
     socket.on('userCount', (count) => {
         const userCountElement = document.getElementById('user-count')
-        userCountElement.innerHTML = "Active Users: " + String(Math.ceil(count/2));
-    })
-    // listen for 'initialPixels' event to get the initial pixel data from server
+        userCountElement.innerHTML = "Active Users: " + count;
+    });
+
+    const timeVar = document.getElementById("timer");
+    const currentPromptElement = document.getElementById("current-prompt");
+    currentPromptElement.innerHTML = "Loading...";
+
+    socket.on('updateRemainingTime', (remainingTime) => {
+        timeVar.innerHTML = "Time Until New Prompt: " + Math.floor(remainingTime / 60) + ":" + (remainingTime % 60).toString().padStart(2, '0');
+    });
+
+    socket.on('updatePrompt', (newPrompt) => {
+        currentPromptElement.innerHTML = newPrompt;
+    });
+
     socket.on('initialPixels', (initialPixels) => {
-      const pixels = document.querySelectorAll('.pixel');
-      pixels.forEach((pixel, index) => {
+      pixelsArray.forEach((pixel, index) => {
         pixel.style.backgroundColor = initialPixels[index];
       });
     });
 
-    // listen for the 'updatePixel' event to receive real-time updates from other clients
     socket.on('updatePixel', (data) => {
-      const pixels = document.querySelectorAll('.pixel');
-      pixels[data.index].style.backgroundColor = data.color;
+      if (pixelsArray[data.index]) {
+          pixelsArray[data.index].style.backgroundColor = data.color;
+      }
     });
 
     socket.on('timerZeroReached', () => {
         // clearCanvas();
         // console.log('Grid reset.');
     });
-  
-    let currentColor = '#000000'; 
 
     function rgbToHex(rgb) {
-        // Split  RGB string into individual values
         const rgbArray = rgb.match(/\d+/g);
-    
         if (rgbArray) {
             return "#" + rgbArray.map(value => {
                 const hex = parseInt(value, 10).toString(16); 
                 return hex.length === 1 ? "0" + hex : hex;
             }).join("");
         }
-    
         return "#000000"; 
     }
   
-    // create single pixel element
-    function createPixel() {
+    function createPixel(index) {
       const pixel = document.createElement('div');
       pixel.className = 'pixel';
   
-      // click to change pixel color
       pixel.addEventListener('click', () => {
-        const color = currentColor;
-        const index = Array.from(pixel.parentNode.children).indexOf(pixel);
-        if (!isEyedropperActive) {
-            pixel.style.backgroundColor = color; // Set the selected color
-        // Send the pixel update to the server
-        socket.emit('updatePixel', { index, color });
-        console.log('Emitted initial pixels to a user');
+        if (isEyedropperActive) {
+            const pixelColor = window.getComputedStyle(pixel).backgroundColor;
+            currentColor = pixelColor;
+            document.getElementById("color-picker").value = rgbToHex(currentColor); 
+            console.log(`Selected color: ${currentColor}`);
+            updateColorPickerValueRGB();
+            toggleEyedropper(); // Auto-turn off eyedropper after selecting
+        } else {
+            const color = currentColor;
+            pixel.style.backgroundColor = color; 
+            socket.emit('updatePixel', { index, color });
+            console.log('Emitted pixel to server');
         }
       });
   
@@ -66,13 +80,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         colorPresets.forEach(preset => {
             preset.classList.remove("selected");
-            preset.style.borderColor = "black";
+            preset.style.borderColor = "transparent";
         });
 
         const selectedPreset = document.querySelector(`[data-color="${color}"]`);
         if (selectedPreset) {
             selectedPreset.classList.add("selected");
-            selectedPreset.style.borderColor = darkenColor(color); 
         }
 
         updateColorPickerValue();
@@ -80,54 +93,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const eyedropperButton = document.getElementById('eyedropper-button');
 
-    let isEyedropperActive = false;
-
     function toggleEyedropper() {
         isEyedropperActive = !isEyedropperActive; 
     
         const colorPresets = document.querySelectorAll(".color-preset");
         colorPresets.forEach(preset => {
             preset.classList.remove("selected");
-            preset.style.width = "30px"; 
-            preset.style.height = "30px"; 
         });
     
         if (isEyedropperActive) {
             eyedropperButton.classList.add('active'); 
-            addEyedropperEventListeners();
         } else {
             eyedropperButton.classList.remove('active'); 
-            removeEyedropperEventListeners();
         }
-    }
-
-    function addEyedropperEventListeners() {
-        const pixels = document.querySelectorAll('.pixel');
-        pixels.forEach(pixel => {
-            pixel.addEventListener('click', () => {
-                if (isEyedropperActive) {
-                    const pixelColor = window.getComputedStyle(pixel).backgroundColor;
-                    currentColor = pixelColor;
-                    document.getElementById("color-picker").value = currentColor; 
-                    console.log(`Selected color: ${currentColor}`);
-                    updateColorPickerValueRGB();
-                } else {
-                    const color = currentColor;
-                    const index = Array.from(pixel.parentNode.children).indexOf(pixel);
-                    pixel.style.backgroundColor = color; 
-                    socket.emit('updatePixel', { index, color });
-                }
-            });
-        });
-    }
-    
-    function removeEyedropperEventListeners() {
-        const pixels = document.querySelectorAll('.pixel');
-        pixels.forEach(pixel => {
-            pixel.removeEventListener('click', () => {
-                
-            });
-        });
     }
 
     eyedropperButton.addEventListener('click', toggleEyedropper);
@@ -152,30 +130,28 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateColorPickerValue() {
         const colorPicker = document.getElementById("color-picker");
         colorPicker.value = currentColor;
-        console.log(`Custom color has been updated to: ${currentColor}`);
     }
 
     function updateColorPickerValueRGB() {
         const colorPicker = document.getElementById("color-picker");
         colorPicker.value = rgbToHex(currentColor);
-        console.log(`Custom color has been updated to: ${currentColor}`);
     }
 
     function createGrid() {
         console.log('Creating grid...');
         const canvasContainer = document.querySelector(".canvas-container");
+        canvasContainer.innerHTML = ''; // Clear just in case
+        pixelsArray = []; // Reset array
 
         for (let i = 0; i < 30 * 50; i++) {
-            const pixel = createPixel();
-            pixel.style.backgroundColor = "fff"; 
-            pixel.style.width = "20px"; 
-            pixel.style.height = "20px"; 
+            const pixel = createPixel(i);
+            pixel.style.backgroundColor = "#fff"; 
             canvasContainer.appendChild(pixel);
+            pixelsArray.push(pixel);
         }
-        console.log("grid created")
+        console.log("grid created");
     }
 
-    // Call the function to create the grid when the page loads
     window.addEventListener("load", createGrid);
 
     const colorPresets = document.querySelectorAll(".color-preset");
@@ -186,15 +162,8 @@ document.addEventListener('DOMContentLoaded', () => {
         preset.addEventListener("click", () => {
             if (isEyedropperActive) {
                 toggleEyedropper(); 
-            } else {
-                colorPresets.forEach(p => {
-                    p.style.width = "30px"; 
-                    p.style.height = "30px"; 
-                });
-                preset.style.width = "35px"; 
-                preset.style.height = "35px"; 
-                setCurrentColor(color);
             }
+            setCurrentColor(color);
         });
 
         if (color === currentColor) {
@@ -213,45 +182,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function downloadCanvas() {
-
         const tempCanvas = createTempCanvas();
-        
-        if (tempCanvas === null) {
-            console.error('Failed to create a temporary canvas.'); 
-            return;
-        }
+        if (tempCanvas === null) return;
 
         const dataURL = tempCanvas.toDataURL('image/png');
-
         const downloadLink = document.createElement('a');
         downloadLink.href = dataURL;
         downloadLink.download = 'canvas.png';
-
         downloadLink.click();
     }
 
     function createTempCanvas() {
-        const canvasContainer = document.querySelector('.canvas-container');
         const tempCanvas = document.createElement('canvas');
         tempCanvas.width = 50 * 20; 
         tempCanvas.height = 30 * 20;
         const context = tempCanvas.getContext('2d');
 
-        const pixels = canvasContainer.querySelectorAll('.pixel');
-
-        if (pixels.length === 0) {
+        if (pixelsArray.length === 0) {
             console.error('No pixels found in the grid.');
             return null;
         }
 
-        pixels.forEach((pixel, index) => {
+        pixelsArray.forEach((pixel, index) => {
             const x = (index % 50) * 20; 
             const y = Math.floor(index / 50) * 20;
-
             const pixelColor = window.getComputedStyle(pixel).backgroundColor;
-
             context.fillStyle = pixelColor;
-
             context.fillRect(x, y, 20, 20);
         });
 
@@ -259,22 +215,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function exportCanvasAsPNG() {
-        const tempCanvas = createTempCanvas();
-        const dataURL = tempCanvas.toDataURL('image/png');
-
-        const downloadLink = document.createElement('a');
-        downloadLink.href = dataURL;
-        downloadLink.download = 'canvas.png'; 
-
-        downloadLink.click();
+        downloadCanvas();
     }
 
-
     function clearCanvas() { 
-        const pixels = document.querySelectorAll('.pixel');
-                pixels.forEach(pixel => {
-                    pixel.style.backgroundColor = "#fff";
-                });
+        pixelsArray.forEach(pixel => {
+            pixel.style.backgroundColor = "#fff";
+        });
     }
 
     const downloadButton = document.getElementById('download-button');
