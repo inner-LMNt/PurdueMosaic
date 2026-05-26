@@ -4,32 +4,25 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="galleryStyles.css">
     <title>Gallery</title>
+</head>
+<body>
+    <div class="page-container">
     <h1 class="title">
         <img src="assets/PurdueMosaicLogo.png" alt="Purdue Mosaic Logo" class="logo-image">
         Gallery
     </h1>
-</head>
-<body>
-    <div class="page-container">
         <a href="/" class="canvas-button">Back to Canvas</a>
-        <div class="images">
-            <div class="row1">
-                <img src="./assets/prevCanvas/canvas-5.png" alt="">
-                <img src="./assets/prevCanvas/canvas-6.png" alt="">
-                <img src="./assets/prevCanvas/canvas-8.png" alt="">
-                <img src="./assets/prevCanvas/canvas-13.png" alt="">
-            </div>
-            <div class="row2">
-                <img src="./assets/prevCanvas/canvas-9.png" alt="">
-                <img src="./assets/prevCanvas/canvas-16.png" alt="">
-                <img src="./assets/prevCanvas/canvas-12.png" alt="">
-                <img src="./assets/prevCanvas/canvas-15.png" alt="">
-            </div>
+        <button id="refresh-button" class="refresh-button">Refresh</button>
+        <div id="gallery-grid" class="images-grid">
+            <!-- Dynamic gallery items will be injected here -->
         </div>
     </div>
-    <script src="galleryScript.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="galleryScript.js"></script>
 </body>
 </html>
