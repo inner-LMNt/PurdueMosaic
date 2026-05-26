@@ -51,24 +51,44 @@ document.addEventListener('DOMContentLoaded', () => {
         return "#000000"; 
     }
   
-    function createPixel(index) {
-      const pixel = document.createElement('div');
-      pixel.className = 'pixel';
-  
-      pixel.addEventListener('click', () => {
+    let isDrawing = false;
+
+    document.addEventListener('mousedown', () => {
+        isDrawing = true;
+    });
+
+    document.addEventListener('mouseup', () => {
+        isDrawing = false;
+    });
+
+    function paintPixel(pixel, index) {
         if (isEyedropperActive) {
             const pixelColor = window.getComputedStyle(pixel).backgroundColor;
             currentColor = pixelColor;
             document.getElementById("color-picker").value = rgbToHex(currentColor); 
             console.log(`Selected color: ${currentColor}`);
             updateColorPickerValueRGB();
-            toggleEyedropper(); // Auto-turn off eyedropper after selecting
+            toggleEyedropper(); 
         } else {
             const color = currentColor;
             pixel.style.backgroundColor = color; 
             socket.emit('updatePixel', { index, color });
-            console.log('Emitted pixel to server');
         }
+    }
+
+    function createPixel(index) {
+      const pixel = document.createElement('div');
+      pixel.className = 'pixel';
+  
+      pixel.addEventListener('mousedown', (e) => {
+          e.preventDefault(); 
+          paintPixel(pixel, index);
+      });
+
+      pixel.addEventListener('mouseenter', (e) => {
+          if (isDrawing) {
+              paintPixel(pixel, index);
+          }
       });
   
       return pixel;
